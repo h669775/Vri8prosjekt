@@ -22,11 +22,11 @@ public class KortSamling {
 	 */
 	public KortSamling() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.constructor("KortSamling"));
-		// TODO - END
-	}
+		samling = new Kort[MAKS_KORT];
+		antall = 0;
+			
+		}
+	
 
 	/**
 	 * Returnerer en tabell med kortene i samlinga. Tabellen trenger ikke være
@@ -50,11 +50,7 @@ public class KortSamling {
 	 */
 	public int getAntalKort() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+		return antall;
 	}
 	
 	/**
@@ -64,11 +60,12 @@ public class KortSamling {
 	 */
 	public boolean erTom() {
 		
-		// TODO - START
-				
-		throw new UnsupportedOperationException(TODO.method());
 		
-		// TODO - END
+		if (antall == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -79,36 +76,35 @@ public class KortSamling {
 	 */
 	public void leggTil(Kort kort) {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
-		
-	}
+		if (antall < MAKS_KORT) {
+            samling[antall] = kort;
+            antall++;
+        } else {
+            System.out.println("Samlinga er allerede full. Kan ikkje legge til fleire kort. ");
+        }
+    }
 	
 	/**
 	 * Legger alle korta (hele kortstokken) til samlinga. Korta vil være sortert
 	 * slik at de normalt må stokkes før bruk.
 	 */
 	public void leggTilAlle() {
-		
-		// TODO - START
-		// Husk: bruk Regler.MAKS_KORT_FARGE for å få antall kort per farge
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
-	}
-
+		for (Kortfarge farge : Kortfarge.values()) {
+            for (int i = 1; i <= Regler.MAKS_KORT_FARGE; i++) {
+                leggTil(new Kort(farge, i));
+            }
+        }
+    }
 	/**
 	 * Fjerner alle korta fra samlinga slik at den blir tom.
 	 */
 	public void fjernAlle() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
-	}
+		for (int i = 0; i < antall; i++) {
+            samling[i] = null;
+        }
+        antall = 0;
+    }
 	
 	/**
 	 * Ser på siste kortet i samlinga.
@@ -118,13 +114,11 @@ public class KortSamling {
 	 */
 	public Kort seSiste() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
-		
-	}
+		if (erTom()) {
+            return null;
+        }
+        return samling[antall - 1];
+    }
 
 	/**
 	 * Tek ut siste kort fra samlinga.
@@ -134,12 +128,14 @@ public class KortSamling {
 	 */
 	public Kort taSiste() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
-	}
+		if (erTom()) {
+            return null;
+        }
+        Kort sisteKort = samling[antall - 1];
+        samling[antall - 1] = null;
+        antall--;
+        return sisteKort;
+    }
 	
 	/**
 	 * Undersøker om et kort finst i samlinga.
@@ -150,13 +146,14 @@ public class KortSamling {
 	 */
 	public boolean har(Kort kort) {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// return false;
-		// TODO - END
-		
-	}
+		for (int i = 0; i < antall; i++) {
+            if (samling[i].equals(kort)) {
+                return true;
+            }
+        }
+        return false;
+    }
+	
 
 	/**
 	 * Fjernar et kort frå samlinga. Dersom kortet ikke finnest i samlinga,
@@ -170,11 +167,17 @@ public class KortSamling {
 			 
 	public boolean fjern(Kort kort) {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		for (int i = 0; i < antall; i++) {
+	        if (samling[i].equals(kort)) {
+	            for (int j = i; j < antall - 1; j++) {
+	                samling[j] = samling[j + 1];
+	            }
+	            samling[antall - 1] = null;
+	            antall--;
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
 	/**
@@ -185,12 +188,11 @@ public class KortSamling {
 	 */
 	public Kort[] getAllekort() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
-	
+		Kort[] allekort = new Kort[antall];
+	    for (int i = 0; i < antall; i++) {
+	        allekort[i] = samling[i];
+	    }
+	    return allekort;
 	}
 	
 }

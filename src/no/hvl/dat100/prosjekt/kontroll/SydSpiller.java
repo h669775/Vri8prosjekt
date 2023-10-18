@@ -1,6 +1,9 @@
 package no.hvl.dat100.prosjekt.kontroll;
 
 import no.hvl.dat100.prosjekt.TODO;
+
+
+import no.hvl.dat100.prosjekt.kontroll.spill.Kontroll;
 import no.hvl.dat100.prosjekt.kontroll.dommer.Regler;
 import no.hvl.dat100.prosjekt.kontroll.spill.Handling;
 import no.hvl.dat100.prosjekt.kontroll.spill.HandlingsType;
@@ -37,11 +40,20 @@ public class SydSpiller extends Spiller {
 	@Override
 	public Handling nesteHandling(Kort topp) {
 
-		// TODO - START
-		/* first-fit strategi */
-	
-		throw new UnsupportedOperationException(TODO.method());
-	
-		// TODO - END
+		// Iterate through Syd's hand
+	    for (Kort kort : getHand().getAllekort()) {
+	        if (Regler.kanLeggeNed(topp, kort)) {
+	            return new Handling(HandlingsType.LEGGNED, kort);
+	        }
+	    }
+
+	    // If no cards can be played, check if Syd has already drawn the maximum times
+	    if (getAntallTrekk() >= Regler.maksTrekk()) {
+	        return new Handling(HandlingsType.FORBI, null);
+	    } else {
+	        return new Handling(HandlingsType.TREKK, null);
+	    }
 	}
 }
+	
+	
